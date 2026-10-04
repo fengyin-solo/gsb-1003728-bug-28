@@ -18,6 +18,10 @@ export type ModuleMeta = {
   actions: string[]
   actionTargets: Record<string, string>
   metrics: string[]
+  /** 可选：动作允许的起始状态。登记了就校验来源状态，没登记保持任意状态可执行。 */
+  transitions?: Record<string, string[]>
+  /** 可选：终态集合（到了就不再算待办）。缺省取 statuses 的最后一个。 */
+  finalStatuses?: string[]
 }
 
 export type PageResult = {
@@ -30,6 +34,12 @@ export type PageResult = {
 export type ActionResult = {
   ok: boolean
   message: string
+}
+
+export type SaveResult = ActionResult & {
+  /** 命中已有记录时为已有记录的 id（沿用，不生成第二个版本） */
+  id?: number
+  reused?: boolean
 }
 
 export type OverviewResult = {
